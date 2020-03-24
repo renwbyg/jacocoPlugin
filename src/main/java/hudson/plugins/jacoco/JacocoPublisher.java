@@ -77,10 +77,10 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
      */
     private String execPattern;
     private String classPattern;
-    // ssh格式的git地址
-    private String sshRepoPattern;
-    // 基准tag
-    private String basicTagPattern;
+    // 本地Git路径
+    private String gitPath;
+    // 基准分支
+    private String basicBranch;
     private String sourcePattern;
     private String sourceInclusionPattern;
     private String sourceExclusionPattern;
@@ -122,8 +122,8 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
     public JacocoPublisher() {
         this.execPattern = "**/**.exec";
         this.classPattern = "**/classes";
-        this.sshRepoPattern = "";
-        this.basicTagPattern = "";
+        this.gitPath = "";
+        this.basicBranch = "";
         this.sourcePattern = "**/src/main/java";
         this.sourceInclusionPattern = "**/*.java";
         this.sourceExclusionPattern = "";
@@ -231,8 +231,8 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
 	public String toString() {
 		return "JacocoPublisher [execPattern=" + execPattern
 				+ ", classPattern=" + classPattern
-                + ", sshRepoPattern=" + sshRepoPattern
-                + ", basicTagPattern=" + basicTagPattern
+                + ", gitPath=" + gitPath
+                + ", basicBranch=" + basicBranch
 				+ ", sourcePattern=" + sourcePattern
 				+ ", sourceExclusionPattern=" + sourceExclusionPattern
 				+ ", sourceInclusionPattern=" + sourceInclusionPattern
@@ -269,12 +269,12 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
 		return classPattern;
 	}
 
-    public String getSshRepoPattern() {
-        return sshRepoPattern;
+    public String getGitPath() {
+        return gitPath;
     }
 
-    public String getBasicTagPattern() {
-        return basicTagPattern;
+    public String getBasicBranch() {
+        return basicBranch;
     }
 
 	public String getSourcePattern() {
@@ -419,13 +419,13 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
     }
 
     @DataBoundSetter
-    public void setSshRepoPattern(String sshRepoPattern) {
-        this.sshRepoPattern = sshRepoPattern;
+    public void setGitPath(String gitPath) {
+        this.gitPath = gitPath;
     }
 
     @DataBoundSetter
-    public void setBasicTagPattern(String basicTagPattern) {
-        this.basicTagPattern = basicTagPattern;
+    public void setBasicBranch(String basicBranch) {
+        this.basicBranch = basicBranch;
     }
 
     @DataBoundSetter
@@ -686,12 +686,12 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
         }
 
 //        methodInfos = new ArrayList<MethodInfo>();
-        classInfos = CodeDiff.diffVersionToVersion(sshRepoPattern, basicTagPattern);
+        classInfos = CodeDiff.diffVersionToVersion(gitPath, basicBranch);
 
 //        String baseTag = "";
 
-//        if (!basicTagPattern.equals("") && !sshRepoPattern.equals("")) {
-//            baseTag = basicTagPattern;
+//        if (!basicBranch.equals("") && !sshRepoPattern.equals("")) {
+//            baseTag = basicBranch;
 //            String tagPath = filePath.getParent() + DiffAST.SEPARATOR + baseTag;
 //            logger.println("开始clone历史版本：" + baseTag);
 //            try {
