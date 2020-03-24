@@ -1,6 +1,14 @@
 package hudson.plugins.jacoco;
 
 import hudson.FilePath;
+import hudson.plugins.jacoco.analyzer.Analyzer;
+import org.codehaus.plexus.util.FileUtils;
+import org.jacoco.core.analysis.CoverageBuilder;
+import org.jacoco.core.analysis.IBundleCoverage;
+import org.jacoco.core.data.ExecutionDataReader;
+import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.SessionInfoStore;
+import org.jacoco.maven.FileFilter;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -11,15 +19,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import hudson.plugins.jacoco.analyzer.Analyzer;
-import org.codehaus.plexus.util.FileUtils;
-import org.jacoco.core.analysis.CoverageBuilder;
-import org.jacoco.core.analysis.IBundleCoverage;
-import org.jacoco.core.data.ExecutionDataReader;
-import org.jacoco.core.data.ExecutionDataStore;
-import org.jacoco.core.data.SessionInfoStore;
-import org.jacoco.maven.FileFilter;
 
 
 public class ExecutionFileLoader implements Serializable {
