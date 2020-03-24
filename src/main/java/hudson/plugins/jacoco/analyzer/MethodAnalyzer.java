@@ -12,6 +12,7 @@
 package hudson.plugins.jacoco.analyzer;
 
 import hudson.plugins.jacoco.JacocoPublisher;
+import hudson.plugins.jacoco.diff.ClassInfo;
 import hudson.plugins.jacoco.diff.MethodInfo;
 import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.IMethodCoverage;
@@ -121,7 +122,7 @@ public class MethodAnalyzer extends MethodProbesVisitor
                        final MethodVisitor methodVisitor) {
         filter.filter(methodNode, filterContext, this);
 
-        if (shoudHackMethod(methodNode, JacocoPublisher.methodInfos)){
+        if (shoudHackMethod(methodNode, JacocoPublisher.classInfos)){
             methodVisitor.visitCode();
         }
 
@@ -134,7 +135,7 @@ public class MethodAnalyzer extends MethodProbesVisitor
             currentNode = currentNode.getNext();
         }
 
-        if (shoudHackMethod(methodNode, JacocoPublisher.methodInfos)){
+        if (shoudHackMethod(methodNode, JacocoPublisher.classInfos)){
             methodVisitor.visitEnd();
         }
 
@@ -468,21 +469,24 @@ public class MethodAnalyzer extends MethodProbesVisitor
 
     /**
      * @param methodNode
-     * @param methodInfos
+     * @param classInfos
      * @return
      */
     private boolean shoudHackMethod(final MethodNode methodNode,
-                                    final List<MethodInfo> methodInfos) {
-        if(methodInfos.isEmpty()){
+                                    final List<ClassInfo> classInfos) {
+        if(classInfos.isEmpty()){
             return true;
         }
-        for (final MethodInfo methodInfo : methodInfos) {
-            final String methodName = methodInfo.getMethodName();
-            final String clazzName = methodInfo.getPackages().replace(".", "/")
-                    + "/" + methodInfo.getClassName();
-            if (methodNode.name.equals(methodName)
-                    && className.equals(clazzName)) {
-                return true;
+        for (ClassInfo classInfo : classInfos) {
+            List<MethodInfo> methodInfos = classInfo.getMethodInfos();
+            for (MethodInfo methodInfo : methodInfos) {
+                String methodName = methodInfo.getMethodName();
+                String clazzName = classInfo.getPackages().replace(".", "/")
+                        + "/" + classInfo.getClassName();
+                if (methodNode.name.equals(methodName)
+                        && className.equals(clazzName)) {
+                    return true;
+                }
             }
         }
 

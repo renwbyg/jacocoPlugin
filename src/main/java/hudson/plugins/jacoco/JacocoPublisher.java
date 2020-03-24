@@ -10,9 +10,8 @@ import hudson.model.AbstractProject;
 import hudson.model.Result;
 import hudson.model.Run;
 import hudson.model.TaskListener;
-import hudson.plugins.jacoco.diff.DiffAST;
-import hudson.plugins.jacoco.diff.MethodInfo;
-import hudson.plugins.jacoco.git.GitClone;
+import hudson.plugins.jacoco.diff.ClassInfo;
+import hudson.plugins.jacoco.diff.CodeDiff;
 import hudson.plugins.jacoco.portlet.bean.JacocoDeltaCoverageResultSummary;
 import hudson.plugins.jacoco.portlet.utils.Utils;
 import hudson.plugins.jacoco.report.CoverageReport;
@@ -25,7 +24,6 @@ import jenkins.MasterToSlaveFileCallable;
 import jenkins.model.Jenkins;
 import jenkins.tasks.SimpleBuildStep;
 import org.apache.tools.ant.DirectoryScanner;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
@@ -71,7 +69,8 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
     /**
      * 用于存储对比结果
      */
-    public static List<MethodInfo> methodInfos  = new ArrayList<MethodInfo>();
+//    public static List<MethodInfo> methodInfos  = new ArrayList<MethodInfo>();
+    public static List<ClassInfo> classInfos = new ArrayList<ClassInfo>();
 
     /**
      * Variables containing the configuration set by the user.
@@ -686,27 +685,28 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
             logger.println("[JaCoCo plugin] exclusions: " + Arrays.toString(excludes));
         }
 
-        methodInfos = new ArrayList<MethodInfo>();
+//        methodInfos = new ArrayList<MethodInfo>();
+        classInfos = CodeDiff.diffVersionToVersion(sshRepoPattern, basicTagPattern);
 
-        String baseTag = "";
+//        String baseTag = "";
 
-        if (!basicTagPattern.equals("") && !sshRepoPattern.equals("")) {
-            baseTag = basicTagPattern;
-            String tagPath = filePath.getParent() + DiffAST.SEPARATOR + baseTag;
-            logger.println("开始clone历史版本：" + baseTag);
-            try {
-                GitClone.cloneFiles(sshRepoPattern, baseTag, tagPath);
-            } catch (GitAPIException e) {
-                e.printStackTrace();
-            }
-            logger.println("clone历史版本：" + baseTag + "结束");
-            if (methodInfos.isEmpty()) {
-                DiffAST.diffBaseDir(filePath.toString(), tagPath);
-                logger.println("变更方法数为：" + methodInfos.size());
-            }
-        } else {
-            baseTag = "kdbczdtag";
-        }
+//        if (!basicTagPattern.equals("") && !sshRepoPattern.equals("")) {
+//            baseTag = basicTagPattern;
+//            String tagPath = filePath.getParent() + DiffAST.SEPARATOR + baseTag;
+//            logger.println("开始clone历史版本：" + baseTag);
+//            try {
+//                GitClone.cloneFiles(sshRepoPattern, baseTag, tagPath);
+//            } catch (GitAPIException e) {
+//                e.printStackTrace();
+//            }
+//            logger.println("clone历史版本：" + baseTag + "结束");
+//            if (methodInfos.isEmpty()) {
+//                DiffAST.diffBaseDir(filePath.toString(), tagPath);
+//                logger.println("变更方法数为：" + methodInfos.size());
+//            }
+//        } else {
+//            baseTag = "kdbczdtag";
+//        }
 
         final JacocoBuildAction action = JacocoBuildAction.load(healthReports, taskListener, reportDir, includes, excludes);
         action.getThresholds().ensureValid();
