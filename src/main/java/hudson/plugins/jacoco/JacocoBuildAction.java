@@ -1,22 +1,5 @@
 package hudson.plugins.jacoco;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.Serializable;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
-import org.jacoco.core.analysis.IBundleCoverage;
-import org.jvnet.localizer.Localizable;
-import org.kohsuke.stapler.StaplerProxy;
-
 import hudson.model.AbstractBuild;
 import hudson.model.Action;
 import hudson.model.HealthReport;
@@ -31,6 +14,21 @@ import hudson.plugins.jacoco.model.CoverageObject;
 import hudson.plugins.jacoco.report.CoverageReport;
 import jenkins.model.RunAction2;
 import jenkins.tasks.SimpleBuildStep.LastBuildAction;
+import org.jacoco.core.analysis.IBundleCoverage;
+import org.jvnet.localizer.Localizable;
+import org.kohsuke.stapler.StaplerProxy;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.Serializable;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Build view extension by JaCoCo plugin.
