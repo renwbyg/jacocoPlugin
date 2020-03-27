@@ -66,10 +66,7 @@ public class JacocoPublisher extends Recorder implements SimpleBuildStep {
     // Delta coverage thresholds to apply
     public JacocoHealthReportDeltaThresholds deltaHealthReport;
 
-    /**
-     * 用于存储对比结果
-     */
-//    public static List<MethodInfo> methodInfos  = new ArrayList<MethodInfo>();
+    //用于存储对比结果
     public static List<ClassInfo> classInfos = new ArrayList<ClassInfo>();
 
     /**
